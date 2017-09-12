@@ -10,13 +10,15 @@ The goals / steps of this project are the following:
 * Estimate a bounding box for vehicles detected.
 
 [//]: # (Image References)
-[image1]: ./examples/car_not_car.png
-[image2]: ./examples/HOG_example.jpg
-[image3]: ./examples/sliding_windows.jpg
-[image4]: ./examples/sliding_window.jpg
-[image5]: ./examples/bboxes_and_heat.png
-[image6]: ./examples/labels_map.png
-[image7]: ./examples/output_bboxes.png
+[image1]: ./output_images/example_car_non-car_images.png
+[image2]: ./output_images/LUV_color_histogram.png
+[image3]: ./output_images/LUV_3D_plot.png
+[image4]: ./output_images/YCrCb_HOG_features.png
+[image5]: ./examples/sliding_window.jpg
+[image6]: ./output_images/test_images.png
+[image7]: ./output_images/test_video_first_n_frames.png
+[image8]: ./output_images/combined_heatmap_label.png
+[image9]: ./output_images/
 [video1]: ./project_video.mp4
 
 ## [Rubric](https://review.udacity.com/#!/rubrics/513/view) Points
@@ -41,12 +43,16 @@ I started by reading in all the `vehicle` and `non-vehicle` images provided in l
 
 ![alt text][image1]
 
-I then explored different color spaces and different `skimage.hog()` parameters (`orientations`, `pixels_per_cell`, and `cells_per_block`).  I grabbed random images from each of the two classes and displayed them to get a feel for what the `skimage.hog()` output looks like. Adapting the HOG feature extraction function provided in lecture, I extracted and plotted HOG feature vectors for random images of my dataset (comprising of the GTI and KITTI datasets) using different color spaces such as YUV, HSV, HLS, LUV, Lab, and YCrCb. I repeated this multiple times on various combinations of color spaces and HOG parameters. 
+I then explored different color spaces and different `skimage.hog()` parameters (`orientations`, `pixels_per_cell`, and `cells_per_block`).  I grabbed random images from each of the two classes and displayed them to get a feel for what the `skimage.hog()` output looks like. Adapting the HOG feature extraction function provided in lecture, I extracted and plotted HOG feature vectors for random images of my dataset (comprising of the GTI and KITTI datasets) using different color spaces such as YUV, HSV, HLS, LUV, Lab, and YCrCb. I repeated this multiple times on various combinations of color spaces and HOG parameters.  
+
+Here are example plots of how I explored different color spaces:
+
+![alt text][image2]
+![alt text][image3]
 
 Here is an example using the `YCrCb` color space and HOG parameters of `orientations=8`, `pixels_per_cell=(8, 8)` and `cells_per_block=(2, 2)`:
 
-
-![alt text][image2]
+![alt text][image4]
 
 #### 2. Explain how you settled on your final choice of HOG parameters.
 
@@ -102,7 +108,7 @@ Here are my experiments:
 
 I restricted the search space of the sliding window search to be the bottom half of the image. As recommended, it seemed illogical to search for objects in the sky. I stuck with a 50% overlap window because I found it to be fairly accurate in discovering cars. However, it did take some nudging to ignore false positives. Here is an example output of the sliding window search: 
 
-![alt text][image3]
+![alt text][image5]
 
 #### 2. Show some examples of test images to demonstrate how your pipeline is working.  What did you do to optimize the performance of your classifier?
 
@@ -110,13 +116,13 @@ However, I am not a fan of the vanilla Sliding Window approach. Instead I used t
 
 In the end, I searched on 7 scales using YCrCb 3-channel HOG features plus spatially binned color and histograms of color in the feature vector, which provided a nice result. This came after a lot of experimentation with parameter tuning. Please refer to my experiment log included above. Here are some example images:
 
-![alt text][image4]
+![alt text][image6]
 ---
 
 ### Video Implementation
 
 #### 1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (somewhat wobbly or unstable bounding boxes are ok as long as you are identifying the vehicles most of the time with minimal false positives.)
-Here's a [link to my video result](./project_video_with_detection.mp4)
+Here's a [link to my TEST video result](./test_video_with_detection_find_cars.mp4) and a [link to my PROJECT video result](./project_video_with_detection.mp4)
 
 
 #### 2. Describe how (and identify where in your code) you implemented some kind of filter for false positives and some method for combining overlapping bounding boxes.
@@ -129,13 +135,13 @@ Here's an example result showing the heatmap from a series of frames of video, t
 
 ### Here are six frames and their corresponding heatmaps:
 
-![alt text][image5]
+![alt text][image7]
 
 ### Here is the output of `scipy.ndimage.measurements.label()` on the integrated heatmap from all six frames:
-![alt text][image6]
+![alt text][image8]
 
 ### Here the resulting bounding boxes are drawn onto the last frame in the series:
-![alt text][image7]
+![alt text][image9]
 
 
 
