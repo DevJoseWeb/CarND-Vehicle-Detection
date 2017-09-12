@@ -25,23 +25,23 @@ The goals / steps of this project are the following:
 Woohoo :)
 
 ---
-###Writeup / README
+### Writeup / README
 
-####1. Provide a Writeup / README that includes all the rubric points and how you addressed each one.  You can submit your writeup as markdown or pdf.  [Here](https://github.com/udacity/CarND-Vehicle-Detection/blob/master/writeup_template.md) is a template writeup for this project you can use as a guide and a starting point.  
+#### 1. Provide a Writeup / README that includes all the rubric points and how you addressed each one.  You can submit your writeup as markdown or pdf.  [Here](https://github.com/udacity/CarND-Vehicle-Detection/blob/master/writeup_template.md) is a template writeup for this project you can use as a guide and a starting point.  
 
-You're reading it!
+You're reading it -- I hope you enjoy it!
 
-###Histogram of Oriented Gradients (HOG)
+### Histogram of Oriented Gradients (HOG)
 
 ####1. Explain how (and identify where in your code) you extracted HOG features from the training images.
 
-The code for this step is contained in the first code cell of the IPython notebook (or in lines # through # of the file called `some_file.py`).  
+The code for this step is contained in the code cell of the IPython notebook (P5.ipynb) under the header "Histogram of Gradients, Parameter Tuning and Feature Extraction". 
 
-I started by reading in all the `vehicle` and `non-vehicle` images.  Here is an example of one of each of the `vehicle` and `non-vehicle` classes:
+I started by reading in all the `vehicle` and `non-vehicle` images provided in lecture. Due to the size of the datasets, they are stored locally on my machine. Here are links to download them from Udacity:  . Here is an example of one of each of the `vehicle` and `non-vehicle` classes:
 
 ![alt text][image1]
 
-I then explored different color spaces and different `skimage.hog()` parameters (`orientations`, `pixels_per_cell`, and `cells_per_block`).  I grabbed random images from each of the two classes and displayed them to get a feel for what the `skimage.hog()` output looks like.
+I then explored different color spaces and different `skimage.hog()` parameters (`orientations`, `pixels_per_cell`, and `cells_per_block`).  I grabbed random images from each of the two classes and displayed them to get a feel for what the `skimage.hog()` output looks like. Adapting the HOG feature extraction function provided in lecture, I extracted and plotted HOG feature vectors for random images of my dataset (comprising of the GTI and KITTI datasets) using different color spaces such as YUV, HSV, HLS, LUV, Lab, and YCrCb. I repeated this multiple times on various combinations of color spaces and HOG parameters. 
 
 Here is an example using the `YCrCb` color space and HOG parameters of `orientations=8`, `pixels_per_cell=(8, 8)` and `cells_per_block=(2, 2)`:
 
@@ -50,11 +50,45 @@ Here is an example using the `YCrCb` color space and HOG parameters of `orientat
 
 ####2. Explain how you settled on your final choice of HOG parameters.
 
-I tried various combinations of parameters and...
+I tried multiple combinations of color spaces and HOG parameters, eventually settling on a combination using YCrCb color space, HOG parameters (orientation=8, pix_per_cell=8, and cell_per_block=2). I settled on this combination as a result of the next step, which involved training a linear SVM classifier. 
 
 ####3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
 
-I trained a linear SVM using...
+I trained a linear SVM using YCrCb color, orientation=8, pix_per_cell=8 and cell_per_block=2. I used all HOG channels. In addition, I spatially binned each image. Relevant parameters include hist_bins=32 and spatial_size=(32,32). I tried to decrease spatial_size to (16, 16), but I saw significant drops in my test accuracy. 
+
+I decided to use a linear SVM because it is generally fast to train and yields high accuracy. From past experience (having taken the Udacity Machine Learning course as well as personal projects), I hypothesized that a linear SVM would be more than sufficient for this project. This assumption was supported by the recommendations of many students in the online forums and discussions.
+
+Here are my experiments:
+
+  __Experiment 1: Hist + HOG__
+  * Color Space: HLS
+  * Orient = 11
+  * Pix per Cell = 8
+  * Cell per Block = 2
+  * HOG Channel = 2
+  * Hist Bins = 32
+  * Y Min = image_shape[1]//2
+  * Y Max = image_shape[1] - 100
+  * __RESULTS__: Feature vector length: 2252 | 5.3 Seconds to train SVC... | Test Accuracy of SVC =  0.9738
+
+  __Experiment 2: Hist + Spatial + HOG__
+  * Color Space: YCrCb
+  * Orient = 9
+  * Pix per Cell = 8
+  * Cell per Block = 2
+  * HOG Channel = "ALL"
+  * Spatial Size = 32, 32
+  * Hist Bins = 32
+  * Y Min = image_shape[1]//2
+  * Y Max = image_shape[1] - 100
+  * __RESULTS__: Feature vector length: 8460 | 26.11 Seconds to train SVC... | Test Accuracy of SVC =  0.9896
+  * __RESULTS__: Feature vector length: 8460 | 23.99 Seconds to train SVC... | Test Accuracy of SVC =  0.9893
+  * __RESULTS__: Feature vector length: 8460 | 22.89 Seconds to train SVC... | Test Accuracy of SVC =  0.987
+  * __RESULTS__: Feature vector length: 8460 | 24.52 Seconds to train SVC... |Test Accuracy of SVC =  0.9882
+  * __RESULTS__: Feature vector length: 8460 | 8.54 Seconds to train SVC... | Test Accuracy of SVC =  0.9876
+  
+  __Experiment 3: HOG (test purposes only)__
+  * __RESULTS__: Feature vector length: 5292 | 7.25 Seconds to train SVC... | Test Accuracy of SVC =  0.9783
 
 ###Sliding Window Search
 
