@@ -88,6 +88,12 @@ Here are my experiments:
   * __RESULTS__: Feature vector length: 8460 | 8.54 Seconds to train SVC... | Test Accuracy of SVC =  0.9876
   
   __Experiment 3: HOG (test purposes only)__
+   * Color Space: HLS
+  * Orient = 11
+  * Pix per Cell = 8
+  * Cell per Block = 2
+  * HOG Channel = 2
+  * Hist Bins = 32
   * __RESULTS__: Feature vector length: 5292 | 7.25 Seconds to train SVC... | Test Accuracy of SVC =  0.9783
 
 ###Sliding Window Search
