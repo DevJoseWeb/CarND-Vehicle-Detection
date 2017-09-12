@@ -33,7 +33,7 @@ You're reading it -- I hope you enjoy it!
 
 ### Histogram of Oriented Gradients (HOG)
 
-####1. Explain how (and identify where in your code) you extracted HOG features from the training images.
+#### 1. Explain how (and identify where in your code) you extracted HOG features from the training images.
 
 The code for this step is contained in the code cell of the IPython notebook (P5.ipynb) under the header "Histogram of Gradients, Parameter Tuning and Feature Extraction". 
 
@@ -48,11 +48,11 @@ Here is an example using the `YCrCb` color space and HOG parameters of `orientat
 
 ![alt text][image2]
 
-####2. Explain how you settled on your final choice of HOG parameters.
+#### 2. Explain how you settled on your final choice of HOG parameters.
 
 I tried multiple combinations of color spaces and HOG parameters, eventually settling on a combination using YCrCb color space, HOG parameters (orientation=8, pix_per_cell=8, and cell_per_block=2). I settled on this combination as a result of the next step, which involved training a linear SVM classifier. 
 
-####3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
+#### 3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
 
 I trained a linear SVM using YCrCb color, orientation=8, pix_per_cell=8 and cell_per_block=2. I used all HOG channels. In addition, I spatially binned each image. Relevant parameters include hist_bins=32 and spatial_size=(32,32). I tried to decrease spatial_size to (16, 16), but I saw significant drops in my test accuracy. 
 
